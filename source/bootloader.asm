@@ -1,28 +1,21 @@
-org 0x7c00            ; load code to memory
+org 0x7c00              ; load code to memory
 
 ;; setting the video mode
-mov ah, 0x00          ; int 0x10 / ah 0x00 is for video mode
-mov al, 0x01          ; 40x25 text mode
-int 0x10              ; BIOS video interrupt
+mov ah, 0x00            ; int 0x10 / ah 0x00 is for video mode
+mov al, 0x07            ; 80x25 text mode
+int 0x10                ; BIOS video interrupt
 
-mov ah, 0x0e          ; BIOS teleteype output int 10 / 0x0e ah
 mov bx, bootloader_name ; move memory address of string into BX register
-call print            ; calling our print function
-jmp stop
+call print_string       ; calling our print function
 
-print:
-    mov al, [bx]      ; mov character from bx to al
-    cmp al, 0
-    je end            ; jump if equal (al = 0) to halt label
-    int 0x10          ; BIOS video interrupt
-    add bx, 1         ; move to the next byte / get next character
-    jmp print
+mov dx, 0x12AB          ; sample number to print
+call print_hexadecimal  ; calling our print print function for hex numbers
 
-end:
-    ret
+jmp $                   ; ending program by looping jump here
 
-stop:
-    jmp $             ; ending program by looping jump here
+;; including files functions
+%include "printstring.asm"
+%include "printhexadecimal.asm"
 
 bootloader_name: db 'NOKTA Technologies', 0xA, 0xD, 0 ; 0/null to null terminate
 
