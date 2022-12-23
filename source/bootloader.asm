@@ -8,14 +8,14 @@ int 0x10                ; BIOS video interrupt
 mov bx, bootloader_name ; move memory address of string into BX register
 call print_string       ; calling our print function
 
-mov dx, 0x12AB          ; sample number to print
+mov dx, 0x12C2          ; sample number to print
 call print_hexadecimal  ; calling our print print function for hex numbers
 
 jmp $                   ; ending program by looping jump here
 
 ;; including files functions
-%include "printstring.asm"
-%include "printhexadecimal.asm"
+%include "print/printstring.asm"
+%include "print/printhexadecimal.asm"
 
 bootloader_name: db 'NOKTA Technologies', 0xA, 0xD, 0 ; 0/null to null terminate
 
